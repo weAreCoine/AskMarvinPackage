@@ -20,6 +20,7 @@ class AskServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->discoversMigrations()
+            ->runsMigrations()
             ->hasCommand(AskCommand::class);
     }
 }
