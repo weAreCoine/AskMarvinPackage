@@ -16,17 +16,15 @@ use Marvin\Ask\Entities\Prompt\PromptConfig;
 final class LangfusePromptConfig extends AbstractDataTransferObject implements DtoContract
 {
     public function __construct(
-        public ?string                 $description,
+        public ?string $description,
         public ?LangfusePromptSettings $settings
-    )
-    {
-    }
-
+    ) {}
 
     protected static function mapDataBeforeCreatingNewInstance(array $data): array
     {
         $data['description'] ??= null;
-        $data['settings'] = !empty($data['settings']) ? LangfusePromptSettings::fromArray($data['settings']) : null;
+        $data['settings'] = ! empty($data['settings']) ? LangfusePromptSettings::fromArray($data['settings']) : null;
+
         return $data;
     }
 

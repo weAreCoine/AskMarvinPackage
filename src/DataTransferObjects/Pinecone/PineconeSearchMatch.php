@@ -17,45 +17,53 @@ final class PineconeSearchMatch extends AbstractDataTransferObject implements Dt
     final public string $id {
         get => $this->id;
     }
+
     final public float $score {
         get => $this->score;
     }
+
     final public array $values {
         get => $this->values;
     }
-    final Carbon $updatedAt {
+
+    final public Carbon $updatedAt {
         get => $this->updatedAt;
     }
-    final string $pageUrl {
+
+    final public string $pageUrl {
         get => $this->pageUrl;
     }
-    final string $pageTitle {
+
+    final public string $pageTitle {
         get => $this->pageTitle;
     }
-    final string $content {
+
+    final public string $content {
         get => $this->content;
     }
+
     // Aliases for backwards compatibility
-    final string $title {
+    final public string $title {
         get => $this->pageTitle;
     }
-    final string $url {
+
+    final public string $url {
         get => $this->pageUrl;
     }
-    final string $text {
+
+    final public string $text {
         get => $this->content;
     }
 
     public function __construct(
-        string  $id,
-        float   $score,
-        array   $values,
+        string $id,
+        float $score,
+        array $values,
         ?Carbon $updatedAt,
-        string  $pageUrl,
-        string  $pageTitle,
-        string  $content
-    )
-    {
+        string $pageUrl,
+        string $pageTitle,
+        string $content
+    ) {
         $this->id = $id;
         $this->score = $score;
         $this->values = $values;
@@ -67,7 +75,7 @@ final class PineconeSearchMatch extends AbstractDataTransferObject implements Dt
 
     protected static function mapDataBeforeCreatingNewInstance(array $data): array
     {
-        if (!isset($array['values'])) {
+        if (! isset($array['values'])) {
             $data['values'] = $data['vector'] ?? [];
         }
 

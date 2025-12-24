@@ -12,28 +12,24 @@ use Marvin\Ask\Entities\Prompt\PromptTemplate;
 
 final class LangfusePrompt extends AbstractDataTransferObject implements DtoContract
 {
-
     public function __construct(
-        public ?string              $id,
-        public Carbon               $createdAt,
-        public Carbon               $updatedAt,
-        public string               $projectId,
-        public string               $createdBy,
-        public string               $name,
-        public int                  $version,
-        public string               $type,
-        public ?bool                $isActive,
-        public ?string              $commitMessage,
+        public ?string $id,
+        public Carbon $createdAt,
+        public Carbon $updatedAt,
+        public string $projectId,
+        public string $createdBy,
+        public string $name,
+        public int $version,
+        public string $type,
+        public ?bool $isActive,
+        public ?string $commitMessage,
         /** @var LangfusePromptMessage[] */
-        public array                $prompt,
+        public array $prompt,
         public LangfusePromptConfig $config,
-        public array                $tags,
-        public array                $labels,
-        public mixed                $resolutionGraph,
-    )
-    {
-    }
-
+        public array $tags,
+        public array $labels,
+        public mixed $resolutionGraph,
+    ) {}
 
     /**
      * @throws Exception
@@ -41,14 +37,14 @@ final class LangfusePrompt extends AbstractDataTransferObject implements DtoCont
     protected static function mapDataBeforeCreatingNewInstance(array $data): array
     {
         if (empty($data)) {
-            throw new Exception('Unable to retrieve data from Langfuse API.',);
+            throw new Exception('Unable to retrieve data from Langfuse API.');
         }
         $data['isActive'] = ($data['isActive'] ?? false) === 'true';
-        $data['createdAt'] = !empty($data['createdAt']) ? Carbon::parse($data['createdAt']) : null;
-        $data['updatedAt'] = !empty($data['updatedAt']) ? Carbon::parse($data['updatedAt']) : null;
+        $data['createdAt'] = ! empty($data['createdAt']) ? Carbon::parse($data['createdAt']) : null;
+        $data['updatedAt'] = ! empty($data['updatedAt']) ? Carbon::parse($data['updatedAt']) : null;
 
         if (is_array($data['prompt'])) {
-            $data['prompt'] = array_map(fn($item) => LangfusePromptMessage::fromArray($item), $data['prompt']);
+            $data['prompt'] = array_map(fn ($item) => LangfusePromptMessage::fromArray($item), $data['prompt']);
         } elseif (empty($data['prompt'])) {
             $data['prompt'] = [];
         } else {
@@ -57,7 +53,6 @@ final class LangfusePrompt extends AbstractDataTransferObject implements DtoCont
                 'content' => $data['prompt'],
             ];
         }
-
 
         $data['config'] = LangfusePromptConfig::fromArray($data['config'] ?? []);
 
@@ -72,7 +67,7 @@ final class LangfusePrompt extends AbstractDataTransferObject implements DtoCont
             updatedAt: $this->updatedAt,
             name: $this->name,
             version: $this->version,
-            prompt: array_map(fn(LangfusePromptMessage $message) => $message->toEntity(), $this->prompt),
+            prompt: array_map(fn (LangfusePromptMessage $message) => $message->toEntity(), $this->prompt),
             config: $this->config->toEntity(),
             hydratableAttributes: $this->extractHydratableAttributes()
         );
@@ -87,7 +82,7 @@ final class LangfusePrompt extends AbstractDataTransferObject implements DtoCont
         foreach ($this->prompt as $message) {
             $currentMatches = [];
             preg_match_all($pattern, $message->content, $currentMatches);
-            if (!empty($currentMatches[1])) {
+            if (! empty($currentMatches[1])) {
                 $allPlaceholders = array_merge($allPlaceholders, $currentMatches[1]);
             }
         }

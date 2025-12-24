@@ -13,16 +13,14 @@ class GmailMessageParser
 {
     /**
      * Estrae headers utili + corpo (HTML preferito, altrimenti plain).
-     * @return EmailMessage
      */
     public static function extract(Message $message): EmailMessage
     {
         $payload = $message->getPayload();
         $headers = collect($payload->getHeaders())
-            ->mapWithKeys(fn($h) => [strtolower($h->getName()) => $h->getValue()]);
+            ->mapWithKeys(fn ($h) => [strtolower($h->getName()) => $h->getValue()]);
 
         [$html, $text] = self::extractBody($payload->getParts(), $payload->getBody()?->getData());
-
 
         return new EmailMessage(
             id: $message->getId(),
@@ -44,10 +42,11 @@ class GmailMessageParser
         $text = null;
 
         // se non ci sono parts, prova il body root
-        if ((!$parts || count($parts) === 0) && $rootData) {
+        if ((! $parts || count($parts) === 0) && $rootData) {
             $decoded = self::decodeBody($rootData);
             // non conosciamo il mime: metti tutto in text
             $text = $decoded;
+
             return [$html, $text];
         }
 
@@ -61,11 +60,12 @@ class GmailMessageParser
                 foreach ($p->getParts() ?? [] as $child) {
                     $stack[] = $child;
                 }
+
                 continue;
             }
 
             $data = $p->getBody()?->getData();
-            if (!$data) {
+            if (! $data) {
                 continue;
             }
 
