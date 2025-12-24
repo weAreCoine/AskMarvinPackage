@@ -2,7 +2,7 @@
 
 namespace Marvin\Ask;
 
-use Marvin\Ask\Commands\AskCommand;
+use Marvin\Ask\Commands\AskQuestion;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -21,6 +21,6 @@ class AskServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->discoversMigrations()
             ->runsMigrations()
-            ->hasCommand(AskCommand::class);
+            ->hasCommand(AskQuestion::class);
     }
 }
