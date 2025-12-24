@@ -92,11 +92,11 @@ class AskServiceProvider extends PackageServiceProvider
      */
     protected function registerSingletonServices(): void
     {
-        $this->app->singleton(TokenCounter::class, fn() => new TokenCounter(config('services.prism.chat.model')));
+        $this->app->singleton(TokenCounter::class, fn() => new TokenCounter(config('ask.services.prism.chat.model')));
         $this->app->singleton(Prism::class, Prism::class);
         $this->app->singleton(Pinecone::class,
-            fn() => new Pinecone(config('services.pinecone.api_key'),
-                config('services.pinecone.index_host')));
+            fn() => new Pinecone(config('ask.services.pinecone.api_key'),
+                config('ask.services.pinecone.index_host')));
 
         $this->app->singleton(PromptRepository::class);
         $this->app->singleton(MarkdownConversionService::class);
