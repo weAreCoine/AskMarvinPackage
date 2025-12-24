@@ -13,9 +13,10 @@ use Marvin\Ask\Handlers\ExceptionsHandler;
 readonly class WhatsAppClient
 {
     final public string $verifyToken;
-    final protected string $graphVersion;
-    final protected string $phoneNumberId;
 
+    final protected string $graphVersion;
+
+    final protected string $phoneNumberId;
 
     public function __construct()
     {
@@ -25,10 +26,7 @@ readonly class WhatsAppClient
     }
 
     /**
-     * @param string $messageId
-     * @param string|null $phoneNumberId
-     * @param bool $putTypingIndicator The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
-     * @return bool
+     * @param  bool  $putTypingIndicator  The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
      */
     public function markAsRead(string $messageId, ?string $phoneNumberId = null, bool $putTypingIndicator = true): bool
     {
@@ -55,12 +53,14 @@ readonly class WhatsAppClient
                     'phone_number_id' => $phoneNumberId,
                     'response' => $response->body(),
                 ]);
+
                 return false;
             }
 
             return true;
         } catch (ConnectionException $e) {
             ExceptionsHandler::handle($e);
+
             return false;
         }
     }
@@ -84,12 +84,14 @@ readonly class WhatsAppClient
                     'type' => 'text',
                     'text' => [
                         'preview_url' => false,
-                        'body' => mb_substr($body, 0, 4096)
+                        'body' => mb_substr($body, 0, 4096),
                     ],
                 ])->throw();
+
             return true;
         } catch (ConnectionException|RequestException $e) {
             ExceptionsHandler::handle($e);
+
             return false;
         }
     }

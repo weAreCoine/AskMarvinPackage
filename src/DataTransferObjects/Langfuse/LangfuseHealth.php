@@ -8,13 +8,12 @@ use Marvin\Ask\Abstracts\AbstractDataTransferObject;
 
 final class LangfuseHealth extends AbstractDataTransferObject
 {
-    public function __construct(public readonly bool $status, public readonly string $version)
-    {
-    }
+    public function __construct(public readonly bool $status, public readonly string $version) {}
 
     protected static function mapDataBeforeCreatingNewInstance(array $data): array
     {
         $data['status'] = $data['status'] === 'OK';
+
         return $data;
     }
 }

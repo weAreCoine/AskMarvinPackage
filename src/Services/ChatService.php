@@ -18,6 +18,7 @@ class ChatService
             'type' => $type,
         ])->save();
         $chat->loadmissing('messages');
+
         return $chat;
     }
 
@@ -32,8 +33,7 @@ class ChatService
     }
 
     /**
-     * @param bool $forceCreationOfNewChat Force the creation of a new chat even if the active one has no messages
-     * @return Chat
+     * @param  bool  $forceCreationOfNewChat  Force the creation of a new chat even if the active one has no messages
      */
     public static function disableActiveThenGetNewCurrent(bool $forceCreationOfNewChat = false): Chat
     {

@@ -15,9 +15,7 @@ final class LangfusePromptMessage extends AbstractDataTransferObject implements 
         public ?string $name = null,
         public ?string $type = null,
         public ?string $content = null,
-    )
-    {
-    }
+    ) {}
 
     public function toEntity(): PromptMessage
     {

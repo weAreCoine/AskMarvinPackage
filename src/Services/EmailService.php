@@ -31,15 +31,14 @@ class EmailService
      * @return Collection<int, EmailMessage>
      */
     public function getInboxMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
 
-    ): Collection
-    {
+    ): Collection {
         return $this->emailClient->getInboxMessages(
             $limit,
             $includeSpam,
@@ -55,14 +54,13 @@ class EmailService
      * @return Collection<int, EmailMessage>
      */
     public function getMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
-    ): Collection
-    {
+    ): Collection {
         return $this->emailClient->getMessages(
             $limit,
             $includeSpam,
@@ -80,11 +78,10 @@ class EmailService
 
     public function reply(
         EmailMessage $emailMessage,
-        string       $replyText,
-        bool         $send = false,
+        string $replyText,
+        bool $send = false,
 
-    )
-    {
+    ) {
         return $this->emailClient->reply($emailMessage, $replyText, $send);
     }
 }

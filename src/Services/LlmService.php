@@ -21,11 +21,9 @@ use Marvin\Ask\Models\Chat;
 final readonly class LlmService
 {
     /**
-     * @param PrismClient $llmClient
+     * @param  PrismClient  $llmClient
      */
-    public function __construct(public LlmProviderClient $llmClient)
-    {
-    }
+    public function __construct(public LlmProviderClient $llmClient) {}
 
     public function speechToText(string $audioPath): string
     {
@@ -44,16 +42,14 @@ final readonly class LlmService
 
     public function text(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = [],
-        bool                  $stream = true,
-        Locale                $locale = Locale::ITALIAN,
-        bool                  $isLowDifficultyTask = false
-    ): string|Generator
-    {
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        bool $stream = true,
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
+    ): string|Generator {
         return $this->llmClient->text($prompt, $chat, $retrievedContents, $stream, locale: $locale, isLowDifficultyTask: $isLowDifficultyTask);
     }
-
 
     public function conversationFromChat(?Chat $chat): array
     {

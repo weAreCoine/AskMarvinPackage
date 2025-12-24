@@ -10,9 +10,7 @@ use Marvin\Ask\Handlers\ExceptionsHandler;
 
 class MarkdownConversionService
 {
-    public function __construct(protected MarkdownConverter $markdownConverter)
-    {
-    }
+    public function __construct(protected MarkdownConverter $markdownConverter) {}
 
     public function mdToHtml(string $markdown): string
     {
@@ -20,6 +18,7 @@ class MarkdownConversionService
             return $this->markdownConverter->convert($markdown)->getContent();
         } catch (CommonMarkException $e) {
             ExceptionsHandler::handle($e);
+
             return '';
         }
     }

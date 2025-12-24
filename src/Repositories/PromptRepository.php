@@ -13,17 +13,13 @@ use Marvin\Ask\Entities\Prompt\PromptTemplate;
  */
 class PromptRepository
 {
-
-    public function __construct(protected AbstractTracingClient $promptProvider)
-    {
-    }
+    public function __construct(protected AbstractTracingClient $promptProvider) {}
 
     public function get(
-        string  $promptName,
+        string $promptName,
         ?string $label = null,
-        ?int    $version = null
-    ): PromptTemplate|false
-    {
+        ?int $version = null
+    ): PromptTemplate|false {
         $promptDto = $this->promptProvider->getPrompt($promptName, $label, $version);
 
         if ($promptDto === false) {

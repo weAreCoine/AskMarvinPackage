@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Marvin\Ask\Services;
 
-
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -21,18 +20,16 @@ use Marvin\Ask\Handlers\ExceptionsHandler;
 
 class TracingContextService
 {
-
     public TracingContext $context {
         get => $this->context;
     }
 
-
     /**
-     * @param LangfuseClient $client
+     * @param  LangfuseClient  $client
      */
     public function __construct(public AbstractTracingClient $client)
     {
-        $this->context = new TracingContext();
+        $this->context = new TracingContext;
     }
 
     public function newTrace(string $name = 'marvin_trace_'): TracingContextService
@@ -48,13 +45,12 @@ class TracingContextService
     }
 
     public function pushEvent(
-        string            $name,
+        string $name,
         string|array|null $input = null,
         string|array|null $error = null,
-        ?array            $metadata = [],
-        ObservationLevel  $level = ObservationLevel::DEFAULT,
-    ): TracingContextService
-    {
+        ?array $metadata = [],
+        ObservationLevel $level = ObservationLevel::DEFAULT,
+    ): TracingContextService {
         $parent = $this->context->getLastOpened();
         $event = new Event(
             name: $name,
@@ -68,17 +64,17 @@ class TracingContextService
             level: $level,
         );
         $this->context->stack->push($event);
+
         return $this;
     }
 
     public function beginSpan(
-        string            $name,
+        string $name,
         string|array|null $input = null,
-        ?array            $metadata = [],
-        ObservationLevel  $level = ObservationLevel::DEFAULT,
-        ?PromptTemplate   $prompt = null,
-    ): TracingContextService
-    {
+        ?array $metadata = [],
+        ObservationLevel $level = ObservationLevel::DEFAULT,
+        ?PromptTemplate $prompt = null,
+    ): TracingContextService {
         $parent = $this->context->getLastOpenedSpan();
         if (is_array($input)) {
             $input = json_encode($input);
@@ -101,16 +97,15 @@ class TracingContextService
     }
 
     public function beginGeneration(
-        string          $name,
+        string $name,
         ?PromptTemplate $prompt = null,
-        string          $statusMessage = 'Generation started',
-        ?string         $input = null,
-        ?string         $model = null,
-        array           $modelParameters = [],
-        array           $usageDetails = [],
-        array           $metadata = [],
-    ): TracingContextService
-    {
+        string $statusMessage = 'Generation started',
+        ?string $input = null,
+        ?string $model = null,
+        array $modelParameters = [],
+        array $usageDetails = [],
+        array $metadata = [],
+    ): TracingContextService {
         $parent = $this->context->getLastOpenedSpan();
 
         $generation = new Generation(
@@ -142,7 +137,7 @@ class TracingContextService
 
             return null;
         }
-        if (!is_string($output)) {
+        if (! is_string($output)) {
             $output = json_encode($output, JSON_PRETTY_PRINT);
         }
 
@@ -150,7 +145,6 @@ class TracingContextService
 
         return $this;
     }
-
 
     public function closeSpan(Collection|array|string|null $output = null, array $metadata = []): ?TracingContextService
     {
@@ -176,10 +170,9 @@ class TracingContextService
         return $this;
     }
 
-
     public function isNotEmpty(): bool
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     public function isEmpty(): bool
@@ -196,14 +189,16 @@ class TracingContextService
 
         try {
             if ($this->client->ingest($this->context)) {
-                $this->context = new TracingContext();
+                $this->context = new TracingContext;
+
                 return true;
             }
+
             return false;
         } catch (Exception $e) {
             ExceptionsHandler::handle($e);
+
             return false;
         }
     }
-
 }
