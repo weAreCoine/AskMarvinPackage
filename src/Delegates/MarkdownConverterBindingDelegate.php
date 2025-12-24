@@ -14,8 +14,8 @@ class MarkdownConverterBindingDelegate
 {
     public static function getConcrete(): MarkdownConverter
     {
-        $environment = new Environment();
-        $environment->addExtension(new CommonMarkCoreExtension());
+        $environment = new Environment;
+        $environment->addExtension(new CommonMarkCoreExtension);
         $environment->addEventListener(DocumentParsedEvent::class,
             function (DocumentParsedEvent $event) {
                 $walker = $event->getDocument()->walker();
@@ -26,7 +26,7 @@ class MarkdownConverterBindingDelegate
                     if ($node instanceof Link
                         && str_starts_with($node->getUrl(), '/')
                     ) {
-                        $node->setUrl($base . $node->getUrl());
+                        $node->setUrl($base.$node->getUrl());
                     }
                 }
             });

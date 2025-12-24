@@ -15,12 +15,13 @@ use Marvin\Ask\Models\WhatsAppMessages;
 
 class AnswerToWhatsAppMessage implements ShouldQueue
 {
-    use Queueable;
     use Dispatchable;
     use InteractsWithQueue;
+    use Queueable;
     use SerializesModels;
 
     protected bool $sendWaitingMessage;
+
     protected string $waitingMessage;
 
     protected bool $canRun = false;
@@ -32,7 +33,7 @@ class AnswerToWhatsAppMessage implements ShouldQueue
     {
         $this->sendWaitingMessage = config('ask.services.whatsapp.send_waiting_message', false);
         $this->waitingMessage = __('Ho ricevuto il tuo messaggio... attendi qualche secondo.');
-        $this->canRun = !empty($payload['messages']) && is_array($payload['messages']);
+        $this->canRun = ! empty($payload['messages']) && is_array($payload['messages']);
     }
 
     /**
@@ -40,11 +41,11 @@ class AnswerToWhatsAppMessage implements ShouldQueue
      */
     public function handle(WhatsAppClient $whatsAppClient): void
     {
-        if (!$this->canRun) {
+        if (! $this->canRun) {
             return;
         }
 
-        Log::info('Received WAMID: ' . ($this->payload['messages'][0]['id'] ?? 'UNKWNOWN'), $this->payload);
+        Log::info('Received WAMID: '.($this->payload['messages'][0]['id'] ?? 'UNKWNOWN'), $this->payload);
         Log::info('WHATSAPP ENV SNAPSHOT', [
             'app_env' => config('app.env'),
             'town' => config('ask.town'),
@@ -70,6 +71,7 @@ class AnswerToWhatsAppMessage implements ShouldQueue
 
             if (WhatsAppMessages::where('message_id', $whatsAppMessageId)->exists()) {
                 Log::warning("Skipping duplicate message ID: $whatsAppMessageId. Already processed.");
+
                 continue;
             }
 
