@@ -28,13 +28,14 @@ trait HasFromArrayMethod
             } elseif ($param->isDefaultValueAvailable()) {
                 $params[$name] = $param->getDefaultValue();
             } else {
-                throw new InvalidArgumentException("Missing required parameter '$name' for " . static::class);
+                throw new InvalidArgumentException("Missing required parameter '$name' for ".static::class);
             }
         }
         try {
             return $reflection->newInstanceArgs($params);
         } catch (ReflectionException $e) {
             ExceptionsHandler::handle($e);
+
             return false;
         }
     }
@@ -43,5 +44,4 @@ trait HasFromArrayMethod
     {
         return $data;
     }
-
 }

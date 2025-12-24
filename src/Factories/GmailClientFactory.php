@@ -13,14 +13,11 @@ use Marvin\Ask\Handlers\ExceptionsHandler;
 
 final class GmailClientFactory extends AbstractEmailClientFactory
 {
-
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function for(string $userEmail, array $scopes = []): ?GmailClient
     {
-        $client = new GoogleClient();
+        $client = new GoogleClient;
         try {
             $client->setAuthConfig(config('services.google_api.sa_key_path'));
             $client->setApplicationName(config('app.name', 'Marvin Gmail'));
@@ -30,14 +27,16 @@ final class GmailClientFactory extends AbstractEmailClientFactory
                     config(
                         'services.google_api.scopes',
                         [
-                            Gmail::GMAIL_COMPOSE, Gmail::GMAIL_SEND, Gmail::GMAIL_READONLY, Gmail::GMAIL_MODIFY
+                            Gmail::GMAIL_COMPOSE, Gmail::GMAIL_SEND, Gmail::GMAIL_READONLY, Gmail::GMAIL_MODIFY,
                         ]
                     )
             );
             $client->fetchAccessTokenWithAssertion();
+
             return new GmailClient(new Gmail($client));
         } catch (Exception $e) {
             ExceptionsHandler::handle($e);
+
             return null;
         }
     }

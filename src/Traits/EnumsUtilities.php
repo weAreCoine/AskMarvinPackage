@@ -14,6 +14,7 @@ trait EnumsUtilities
         foreach (self::cases() as $case) {
             $options[$case->value] = $case->asLabel();
         }
+
         return $options;
     }
 
