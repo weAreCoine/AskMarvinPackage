@@ -13,7 +13,9 @@ class GetEmbedVector extends Command
      * @var string
      */
     protected $signature = 'ask:embed {message}';
+
     protected $aliases = ['embed'];
+
     /**
      * The console command description.
      *

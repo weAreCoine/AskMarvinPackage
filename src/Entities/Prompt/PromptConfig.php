@@ -8,14 +8,12 @@ final readonly class PromptConfig
 {
     public function __construct(
         public string $description,
-        public int    $seed,
-        public float  $top_p,
-        public float  $temperature,
-        public float  $repeat_penalty,
-        public int    $max_retries
-    )
-    {
-    }
+        public int $seed,
+        public float $top_p,
+        public float $temperature,
+        public float $repeat_penalty,
+        public int $max_retries
+    ) {}
 
     public function toArray(): array
     {

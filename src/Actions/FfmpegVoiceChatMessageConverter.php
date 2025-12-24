@@ -30,8 +30,7 @@ class FfmpegVoiceChatMessageConverter extends AudioFileTranscoder
         exec($command);
 
         $this->disk->delete($sourceFilePath);
+
         return $destinationFilePath;
     }
-
-
 }

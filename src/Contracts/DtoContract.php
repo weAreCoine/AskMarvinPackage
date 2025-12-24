@@ -7,5 +7,4 @@ namespace Marvin\Ask\Contracts;
 interface DtoContract
 {
     public function toEntity(): object;
-
 }

@@ -13,11 +13,17 @@ use Marvin\Ask\Enums\TraceEventType;
 class Generation extends AbstractObservation
 {
     public string $model;
+
     public string $statusMessage;
+
     public array $modelParameters = [];
+
     public array $usageDetails = [];
+
     public ?PromptTemplate $prompt;
+
     public Carbon $completionStartTime;
+
     public ?string $input = null;
 
     public TraceEventType $eventType = TraceEventType::GENERATION {
@@ -25,25 +31,24 @@ class Generation extends AbstractObservation
     }
 
     public function __construct(
-        string           $name,
-        string           $traceId,
-        string           $model,
-        string           $statusMessage,
-        Carbon           $completionStartTime,
-        ?PromptTemplate  $prompt = null,
-        ?string          $parentId = null,
-        array            $modelParameters = [],
-        array            $usageDetails = [],
-        ?string          $input = null,
-        ?string          $output = null,
-        ?array           $metadata = [],
-        ?string          $version = null,
-        ?Carbon          $startTime = null,
-        ?Carbon          $endTime = null,
-        ?string          $environment = null,
+        string $name,
+        string $traceId,
+        string $model,
+        string $statusMessage,
+        Carbon $completionStartTime,
+        ?PromptTemplate $prompt = null,
+        ?string $parentId = null,
+        array $modelParameters = [],
+        array $usageDetails = [],
+        ?string $input = null,
+        ?string $output = null,
+        ?array $metadata = [],
+        ?string $version = null,
+        ?Carbon $startTime = null,
+        ?Carbon $endTime = null,
+        ?string $environment = null,
         ObservationLevel $level = ObservationLevel::DEFAULT,
-    )
-    {
+    ) {
         $this->model = $model;
         $this->statusMessage = $statusMessage;
         $this->modelParameters = $modelParameters;
@@ -65,5 +70,4 @@ class Generation extends AbstractObservation
             level: $level,
         );
     }
-
 }

@@ -13,26 +13,27 @@ use Marvin\Ask\Enums\TraceEventType;
 class Span extends AbstractObservation
 {
     public ObservationLevel $level;
+
     public ?PromptTemplate $prompt;
+
     public TraceEventType $eventType = TraceEventType::SPAN {
         get => $this->eventType;
     }
 
     public function __construct(
-        string           $name,
-        string           $traceId,
-        ?string          $parentId = null,
-        ?string          $input = null,
-        ?string          $output = null,
-        ?array           $metadata = [],
-        ?string          $version = null,
-        ?Carbon          $startTime = null,
-        ?Carbon          $endTime = null,
-        ?string          $environment = null,
+        string $name,
+        string $traceId,
+        ?string $parentId = null,
+        ?string $input = null,
+        ?string $output = null,
+        ?array $metadata = [],
+        ?string $version = null,
+        ?Carbon $startTime = null,
+        ?Carbon $endTime = null,
+        ?string $environment = null,
         ObservationLevel $level = ObservationLevel::DEFAULT,
-        ?PromptTemplate  $prompt = null
-    )
-    {
+        ?PromptTemplate $prompt = null
+    ) {
         $this->prompt = $prompt;
         parent::__construct(
             name: $name,

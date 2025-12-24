@@ -13,7 +13,9 @@ use Ramsey\Collection\Exception\InvalidPropertyOrMethod;
 abstract class AudioFileTranscoder implements AudioFileTranscoderContract
 {
     protected string $diskName = 'audio';
+
     protected string $pathDirectory = '';
+
     protected Filesystem $disk;
 
     /**
@@ -40,6 +42,7 @@ abstract class AudioFileTranscoder implements AudioFileTranscoderContract
         if (empty($this->pathDirectory)) {
             return $filename;
         }
+
         return sprintf('%s/%s', $this->pathDirectory, $filename);
     }
 
@@ -60,5 +63,4 @@ abstract class AudioFileTranscoder implements AudioFileTranscoderContract
             default => 'dat',
         };
     }
-
 }

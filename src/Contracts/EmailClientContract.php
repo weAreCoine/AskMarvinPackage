@@ -13,22 +13,22 @@ interface EmailClientContract
     public static function for(string $userEmail, array $scopes = []): ?self;
 
     public function getMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        string  $searchQuery = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        string $searchQuery = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
     ): Collection;
 
     public function getInboxMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        string  $searchQuery = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        string $searchQuery = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
     ): Collection;
 
@@ -36,8 +36,8 @@ interface EmailClientContract
 
     public function reply(
         EmailMessage $emailMessage,
-        string       $replyText,
-        bool         $send = false,
+        string $replyText,
+        bool $send = false,
     );
 
     public function saveDraft(EmailMessage $original, EmailMessage $draftMessage, bool $replyAll = false);

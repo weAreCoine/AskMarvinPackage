@@ -13,28 +13,25 @@ abstract class AbstractEmailClient implements EmailClientContract
 {
     abstract public static function for(string $userEmail, array $scopes = []): ?self;
 
-
     abstract public function getMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        string  $searchQuery = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        string $searchQuery = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
     ): Collection;
-
 
     abstract public function getInboxMessages(
-        int     $limit = 10,
-        bool    $includeSpam = false,
-        string  $filterFrom = '',
-        string  $filterSubject = '',
-        string  $searchQuery = '',
-        bool    $unreadOnly = false,
+        int $limit = 10,
+        bool $includeSpam = false,
+        string $filterFrom = '',
+        string $filterSubject = '',
+        string $searchQuery = '',
+        bool $unreadOnly = false,
         ?Carbon $since = null,
     ): Collection;
-
 
     abstract public function last(): ?EmailMessage;
 
@@ -42,7 +39,7 @@ abstract class AbstractEmailClient implements EmailClientContract
 
     abstract public function reply(
         EmailMessage $emailMessage,
-        string       $replyText,
-        bool         $send = false,
+        string $replyText,
+        bool $send = false,
     );
 }

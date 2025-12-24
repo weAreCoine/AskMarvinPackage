@@ -41,14 +41,23 @@ class GenerateEmailReplies extends Command implements Isolatable
     protected array $allowedEmailDomains = ['askmarvin.it', 'coine.it'];
 
     protected bool $force = false;
+
     protected int $limit = 1;
+
     protected bool $unreadOnly = true;
+
     protected ?string $only = null;
+
     protected ?string $datetime = null;
+
     protected bool $scheduled = false;
+
     protected ?Carbon $since = null;
+
     protected ?GenerateAnswerAction $action = null;
+
     protected int $totalProcessedEmails = 0;
+
     protected EmailService $client;
 
     /**
@@ -58,12 +67,12 @@ class GenerateEmailReplies extends Command implements Isolatable
     {
         $this->only = $this->option('only');
         $this->unreadOnly = $this->option('unread');
-        $this->limit = min(100, max(1, (int)$this->option('limit')));
+        $this->limit = min(100, max(1, (int) $this->option('limit')));
         $this->force = $this->option('force');
         $this->datetime = $this->option('datetime');
         $this->scheduled = $this->option('scheduled');
 
-        if (!empty($datetime)) {
+        if (! empty($datetime)) {
             $this->since = Carbon::parse($this->datetime, 'Europe/Rome');
         } elseif ($this->scheduled) {
             $this->since = CommandRun::whereSuccess(true)
@@ -137,7 +146,8 @@ class GenerateEmailReplies extends Command implements Isolatable
     /**
      * Responds to an email by generating a reply and updating the relevant database records.
      *
-     * @param EmailMessage $email The email message to process.
+     * @param  EmailMessage  $email  The email message to process.
+     *
      * @reurn bool|string Returns true if successfully processed, false if an error occurred,
      *                     or a string reason if the email does not require a response.
      */
@@ -146,6 +156,7 @@ class GenerateEmailReplies extends Command implements Isolatable
         $needsAnswerGeneration = $this->needsAnswerGeneration($email);
         if ($needsAnswerGeneration !== true) {
             $this->warn(sprintf('Email (#%s) skipped. Reason: %s', $email->id, $needsAnswerGeneration));
+
             return $needsAnswerGeneration;
         }
 
@@ -168,9 +179,11 @@ class GenerateEmailReplies extends Command implements Isolatable
                     'is_sent' => false,
                     'responded_at' => Carbon::now(),
                 ]);
+
             return true;
         } catch (Exception $e) {
             ExceptionsHandler::handle($e);
+
             return false;
         }
     }
@@ -178,11 +191,11 @@ class GenerateEmailReplies extends Command implements Isolatable
     protected function needsAnswerGeneration(EmailMessage $email): true|string
     {
 
-        if (!in_array($this->getEmailSenderDomain($email->from), $this->allowedEmailDomains)) {
+        if (! in_array($this->getEmailSenderDomain($email->from), $this->allowedEmailDomains)) {
             return 'sender domain not allowed';
         }
 
-        if (Email::whereEmailId($email->id)->exists() && !$this->force) {
+        if (Email::whereEmailId($email->id)->exists() && ! $this->force) {
             return 'already processed';
         }
 
