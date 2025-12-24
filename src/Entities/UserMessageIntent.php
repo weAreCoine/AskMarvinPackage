@@ -19,12 +19,10 @@ class UserMessageIntent
 
     public function __construct(
         protected string $topic,
-        protected array  $intents,
-        protected array  $semanticQueries,
-        protected float  $confidence
-    )
-    {
-    }
+        protected array $intents,
+        protected array $semanticQueries,
+        protected float $confidence
+    ) {}
 
     public function getQueriesCollection(): Collection
     {

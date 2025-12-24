@@ -14,7 +14,9 @@ class DeleteOldCommandRuns extends Command
      * @var string
      */
     protected $signature = 'ask:forget-commands-runs {--days=15 : Number of days to keep command runs}';
+
     protected $aliases = ['command-run:delete'];
+
     /**
      * The console command description.
      *
@@ -27,12 +29,13 @@ class DeleteOldCommandRuns extends Command
      */
     public function handle(): int
     {
-        $days = (int)$this->option('days');
+        $days = (int) $this->option('days');
         $this->info("Deleting command runs older than $days days...");
         $query = CommandRun::where('created_at', '<', now()->subDays($days));
         $count = $query->count();
         $query->delete();
         $this->info(sprintf('%s successfully deleted.', Str::plural('row', $count, true)));
+
         return self::SUCCESS;
     }
 }

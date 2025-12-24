@@ -30,23 +30,23 @@ abstract class LlmProviderClient implements LlmClientContract
     public string $textToSpeechModel;
 
     public string $lowDifficultyChatModel;
-    public Provider $lowDifficultyChatProvider;
 
+    public Provider $lowDifficultyChatProvider;
 
     abstract public function generateConversation(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = []
+        ?Chat $chat = null,
+        array $retrievedContents = []
     ): array;
 
     abstract public function text(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = [],
-        bool                  $stream = true,
-        bool                  $forceNotStructuredOutput = false,
-        Locale                $locale = Locale::ITALIAN,
-        bool                  $isLowDifficultyTask = false
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        bool $stream = true,
+        bool $forceNotStructuredOutput = false,
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
     ): string|Generator;
 
     abstract public function embed(string $prompt): array;
@@ -61,10 +61,9 @@ abstract class LlmProviderClient implements LlmClientContract
      */
     abstract protected function structured(
         PromptTemplate $prompt,
-        ?Chat          $chat = null,
-        array          $retrievedContents = [],
-        Locale         $locale = Locale::ITALIAN,
-        bool           $isLowDifficultyTask = false
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
     ): string;
-
 }

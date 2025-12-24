@@ -7,12 +7,12 @@ namespace Marvin\Ask\Abstracts;
 use Illuminate\Support\Collection;
 use Marvin\Ask\Contracts\VectorialDatabaseClientContract;
 
-abstract class VectorialDatabaseClient
-    implements VectorialDatabaseClientContract
+abstract class VectorialDatabaseClient implements VectorialDatabaseClientContract
 {
     public mixed $client {
         get => $this->client;
     }
+
     public ?string $metric {
         get => $this->describeIndex(true)->get('metric');
     }
@@ -41,31 +41,30 @@ abstract class VectorialDatabaseClient
         get => $this->rerankModel;
     }
 
-
     abstract public function describeIndex(bool $safe = false
     ): Collection|false;
 
     abstract public function search(
         array $vector,
-        int   $topK = 10,
-        bool  $filterResults = true,
+        int $topK = 10,
+        bool $filterResults = true,
         float $minScore = 0.7,
     ): Collection;
 
     abstract public function rerank(
-        string     $userPrompt,
+        string $userPrompt,
         Collection $results,
-        int        $topN = 3,
-        array      $rankFields = ['content'],
+        int $topN = 3,
+        array $rankFields = ['content'],
     ): Collection;
 
     abstract public function rankedSearch(
         string $userPrompt,
-        array  $vector,
-        int    $topK = 3,
-        bool   $filterResults = true,
-        float  $minScore = 0.7,
-        int    $topN = 3,
-        array  $rankFields = ['content'],
+        array $vector,
+        int $topK = 3,
+        bool $filterResults = true,
+        float $minScore = 0.7,
+        int $topN = 3,
+        array $rankFields = ['content'],
     ): Collection;
 }

@@ -16,21 +16,21 @@ use Marvin\Ask\Services\VectorialDatabaseService;
 abstract class AbstractGenerateAnswerAction implements ControllerActionContract
 {
     protected PromptTemplate|false $prompt;
+
     protected array $hydration;
 
     protected string $message;
 
     public function __construct(
-        protected PromptRepository         $promptRepository,
-        protected TracingContextService    $trace,
-        protected LlmService               $llmService,
+        protected PromptRepository $promptRepository,
+        protected TracingContextService $trace,
+        protected LlmService $llmService,
         protected VectorialDatabaseService $vectorialDatabaseService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @template T of self
+     *
      * @return T
      */
     public static function make(): static
@@ -49,13 +49,12 @@ abstract class AbstractGenerateAnswerAction implements ControllerActionContract
             'retrieve-prompt',
             input: $this->message,
             metadata: [
-                'hydration' => $this->hydration
+                'hydration' => $this->hydration,
             ]
         );
 
         $this->prompt = $this->promptRepository
             ->get($promptName, $label);
-
 
         if ($this->prompt === false) {
             $this->trace->closeSpan(sprintf('Failed retrieving prompt %s:%s',
@@ -87,7 +86,7 @@ abstract class AbstractGenerateAnswerAction implements ControllerActionContract
         $this->trace->beginSpan('search-vectors', input: $vector);
         $searchResults = $this->vectorialDatabaseService->search($vector[0]);
         $searchResults = $searchResults->map(
-            fn(SearchMatch $match) => [
+            fn (SearchMatch $match) => [
                 'content' => $match->content,
                 'page_url' => $match->pageUrl,
                 'page_title' => $match->pageTitle,

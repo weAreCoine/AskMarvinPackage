@@ -28,7 +28,7 @@ class AskServiceProvider extends PackageServiceProvider
                 DeleteOrphans::class,
                 AskQuestion::class,
                 DeleteOldCommandRuns::class,
-                GetEmbedVector::class
+                GetEmbedVector::class,
             ]);
     }
 }

@@ -13,9 +13,9 @@ interface TracingClientContract
     public function getTrace(string $id): array|object|false;
 
     public function getPrompt(
-        string  $promptName,
+        string $promptName,
         ?string $label = null,
-        ?int    $version = null
+        ?int $version = null
     ): object|false;
 
     public function ingest(TracingContext $tracingContext): bool;
@@ -25,5 +25,4 @@ interface TracingClientContract
     public function flushTraces(array|string $traceIds = []): bool;
 
     public function listTraces(): array|false;
-
 }

@@ -9,16 +9,14 @@ use Carbon\Carbon;
 final readonly class SearchMatch
 {
     public function __construct(
-        public string  $id,
-        public float   $score,
-        public array   $vector,
+        public string $id,
+        public float $score,
+        public array $vector,
         public ?Carbon $updatedAt,
-        public string  $pageUrl,
-        public string  $pageTitle,
-        public string  $content,
-    )
-    {
-    }
+        public string $pageUrl,
+        public string $pageTitle,
+        public string $content,
+    ) {}
 
     public static function fromArray(array $data): SearchMatch
     {

@@ -23,6 +23,7 @@ class TracingContext
     public string $sessionId {
         get => $this->sessionId;
     }
+
     public ?int $userId {
         get => $this->userId;
     }
@@ -30,6 +31,7 @@ class TracingContext
     public Carbon $timestamp {
         get => $this->timestamp;
     }
+
     public string $name {
         get => $this->name;
     }
@@ -39,7 +41,6 @@ class TracingContext
         $this->stack = collect();
     }
 
-
     public function getLastOpenedSpan(): ?Span
     {
         return $this->getLastOpened(Span::class);
@@ -48,8 +49,8 @@ class TracingContext
     public function getLastOpened(?string $type = null): Span|Generation|null
     {
         return $this->stack
-            ->when($type !== null, fn($q) => $q->whereInstanceOf($type))
-            ->reject(fn(Event|Span|Generation $observation) => $observation instanceof Event)
+            ->when($type !== null, fn ($q) => $q->whereInstanceOf($type))
+            ->reject(fn (Event|Span|Generation $observation) => $observation instanceof Event)
             ->whereNull('endTime')
             ->last();
     }
@@ -62,19 +63,17 @@ class TracingContext
     public function hasOpenTraces(): bool
     {
         return $this->stack->whereNull('endTime')
-            ->reject(fn(Event|Span|Generation $observation) => $observation instanceof Event)
+            ->reject(fn (Event|Span|Generation $observation) => $observation instanceof Event)
             ->isNotEmpty();
     }
 
     public function isNotEmpty(): bool
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     public function isEmpty(): bool
     {
         return $this->stack->isEmpty();
     }
-
-
 }

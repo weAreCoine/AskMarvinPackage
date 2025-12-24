@@ -34,10 +34,12 @@ class AskQuestion extends Command
         try {
             $answer = $generateAnswerAction->init()->run($question);
             $this->info($answer);
+
             return self::SUCCESS;
         } catch (Exception $e) {
             $this->error($e->getMessage());
             ExceptionsHandler::handle($e);
+
             return self::FAILURE;
         }
     }
