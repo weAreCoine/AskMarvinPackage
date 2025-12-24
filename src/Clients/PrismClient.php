@@ -28,6 +28,7 @@ use Prism\Prism\ValueObjects\Media\Audio;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\SystemMessage;
 use Prism\Prism\ValueObjects\Messages\UserMessage;
+
 use function App\Utilities\compress;
 
 class PrismClient extends LlmProviderClient
@@ -59,7 +60,7 @@ class PrismClient extends LlmProviderClient
 
         $this->dateTimeTool = Tool::as('datetime')
             ->for('Get the current date and time in the format YYYY-MM-DD HH:MM:SS')
-            ->using(fn() => Carbon::now()->format('Y-m-d H:i:s'));
+            ->using(fn () => Carbon::now()->format('Y-m-d H:i:s'));
 
         $this->schemas = [
             'topic_extractor' => new ObjectSchema(
@@ -106,7 +107,7 @@ class PrismClient extends LlmProviderClient
     }
 
     /**
-     * @param array<string> $prompts
+     * @param  array<string>  $prompts
      * @return array<int, array<int, float>>
      */
     public function multipleEmbed(array $prompts): array
@@ -114,7 +115,7 @@ class PrismClient extends LlmProviderClient
         try {
             return collect(Prism::embeddings()->using($this->embedProvider, $this->embedModel)
                 ->fromArray($prompts)
-                ->asEmbeddings()->embeddings)->map(fn(Embedding $embedding) => $embedding->embedding)->toArray();
+                ->asEmbeddings()->embeddings)->map(fn (Embedding $embedding) => $embedding->embedding)->toArray();
         } catch (Exception $e) {
             ExceptionsHandler::handle($e, [
                 'prompts' => $prompts,
@@ -149,15 +150,14 @@ class PrismClient extends LlmProviderClient
 
     public function text(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = [],
-        bool                  $stream = true,
-        bool                  $forceNotStructuredOutput = false,
-        Locale                $locale = Locale::ITALIAN,
-        bool                  $isLowDifficultyTask = false
-    ): string|Generator
-    {
-        if ($prompt instanceof PromptTemplate && !empty($this->schemas[$prompt->name]) && !$forceNotStructuredOutput) {
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        bool $stream = true,
+        bool $forceNotStructuredOutput = false,
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
+    ): string|Generator {
+        if ($prompt instanceof PromptTemplate && ! empty($this->schemas[$prompt->name]) && ! $forceNotStructuredOutput) {
             return $this->structured($prompt, $chat, $retrievedContents);
         }
 
@@ -191,12 +191,11 @@ class PrismClient extends LlmProviderClient
 
     protected function structured(
         PromptTemplate $prompt,
-        ?Chat          $chat = null,
-        array          $retrievedContents = [],
-        Locale         $locale = Locale::ITALIAN,
-        bool           $isLowDifficultyTask = false
-    ): string
-    {
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
+    ): string {
         $provider = $this->chatProvider;
         $model = $this->chatModel;
         if ($isLowDifficultyTask) {
@@ -219,27 +218,26 @@ class PrismClient extends LlmProviderClient
     }
 
     /**
-     * @param array $retrievedContents Array will be sliced to 5 elements.
+     * @param  array  $retrievedContents  Array will be sliced to 5 elements.
      */
     public function generateConversation(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = [],
-        Locale                $locale = Locale::ITALIAN
-    ): array
-    {
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        Locale $locale = Locale::ITALIAN
+    ): array {
         $retrievedContents = array_slice($retrievedContents, 0, 20);
         $conversation = [];
         $isStringPrompt = is_string($prompt);
         $systemPrompt = $isStringPrompt ? null : $prompt->getSystemPrompt();
-        if (!empty($systemPrompt)) {
+        if (! empty($systemPrompt)) {
             $conversation[] = new SystemMessage(compress($systemPrompt));
         }
         $conversation[] = new SystemMessage(compress(
-            'Ti viene fornito un array di documenti recuperati (JSON). ' .
-            'Utilizza SOLO questi documenti per affermazioni basate su fatti. ' .
-            "Preferisci lo `score` più alto e l'`updated_at` più recente per ogni documento." .
-            'JSON:' . json_encode($retrievedContents, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            'Ti viene fornito un array di documenti recuperati (JSON). '.
+            'Utilizza SOLO questi documenti per affermazioni basate su fatti. '.
+            "Preferisci lo `score` più alto e l'`updated_at` più recente per ogni documento.".
+            'JSON:'.json_encode($retrievedContents, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
         ));
         $conversation[] = new SystemMessage(sprintf('La risposta deve essere in lingua con codice ISO639-1: %s',
             $locale->value));
@@ -336,7 +334,7 @@ class PrismClient extends LlmProviderClient
         }
 
         return $chat->messages->map(
-            fn(Message $message) => $message->type === MessageType::USER ?
+            fn (Message $message) => $message->type === MessageType::USER ?
                 new UserMessage(compress($message->content)) :
                 new AssistantMessage(compress($message->content))
         )->toArray();
