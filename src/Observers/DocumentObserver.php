@@ -38,7 +38,7 @@ class DocumentObserver
      */
     public function restored(Document $document): void
     {
-        if (!Storage::disk($document->disk)->exists($document->path)) {
+        if (! Storage::disk($document->disk)->exists($document->path)) {
             Notification::make()
                 ->title(__('Impossibile ripristinare il documento'))
                 ->body(__('Il file associato non esiste più sul disco.'))

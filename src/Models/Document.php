@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Marvin\Ask\Models;
@@ -16,6 +17,7 @@ class Document extends Model
     use SoftDeletes;
 
     public static string $disk = 'hetzner';
+
     protected $guarded = [];
 
     protected function casts(): array
@@ -24,7 +26,7 @@ class Document extends Model
             'processed' => 'boolean',
             'metadata' => 'json',
             'status' => DocumentStatus::class,
-            'type' => DocumentType::class
+            'type' => DocumentType::class,
         ];
     }
 }
