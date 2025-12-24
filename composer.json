@@ -44,7 +44,7 @@
     "autoload": {
         "psr-4": {
             "Marvin\\Ask\\": "src/",
-            "Marvin\\Ask\\Database\\Factories\\": "database/factories/"
+            "Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
