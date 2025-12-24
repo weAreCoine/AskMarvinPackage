@@ -41,7 +41,7 @@ class PineconeClient extends VectorialDatabaseClient
 
     public function describeIndex(bool $safe = false): Collection|false
     {
-        $response = $this->client->control()->index(config('services.pinecone.index_name'))->describe();
+        $response = $this->client->control()->index(config('ask.services.pinecone.index_name'))->describe();
         if ($response->successful()) {
             return $response->collect();
         }
@@ -51,34 +51,36 @@ class PineconeClient extends VectorialDatabaseClient
 
     public function rankedSearch(
         string $userPrompt,
-        array $vector,
-        int $topK = 10,
-        bool $filterResults = true,
-        float $minScore = 0.3,
-        int $topN = 3,
-        array $rankFields = ['content'],
-    ): Collection {
+        array  $vector,
+        int    $topK = 10,
+        bool   $filterResults = true,
+        float  $minScore = 0.3,
+        int    $topN = 3,
+        array  $rankFields = ['content'],
+    ): Collection
+    {
         $results = $this->search($vector, $topK, $filterResults, $minScore);
 
         return $this->rerank($userPrompt, $results, $topN, $rankFields);
     }
 
     /**
-     * @param  array<float>  $vector
+     * @param array<float> $vector
      * @return Collection<SearchMatch>
      */
     public function search(
         array $vector,
-        int $topK = 10,
-        bool $filterResults = true,
+        int   $topK = 10,
+        bool  $filterResults = true,
         float $minScore = 0.3,
-    ): Collection {
+    ): Collection
+    {
         try {
             $results = $this->client
                 ->data()
                 ->vectors()
-                ->query(vector: $vector, namespace: config('services.pinecone.namespace'), topK: $topK);
-            if (! $results->successful()) {
+                ->query(vector: $vector, namespace: config('ask.services.pinecone.namespace'), topK: $topK);
+            if (!$results->successful()) {
                 return collect();
             }
 
@@ -94,7 +96,7 @@ class PineconeClient extends VectorialDatabaseClient
                 })->filter();
 
             if ($filterResults) {
-                $results = $results->filter(fn (SearchMatch $match) => $match->score >= $minScore);
+                $results = $results->filter(fn(SearchMatch $match) => $match->score >= $minScore);
             }
 
             return $results;
@@ -106,24 +108,25 @@ class PineconeClient extends VectorialDatabaseClient
     }
 
     /**
-     * @param  Collection<SearchMatch>  $results
+     * @param Collection<SearchMatch> $results
      */
     public function rerank(
-        string $userPrompt,
+        string     $userPrompt,
         Collection $results,
-        int $topN = 3,
-        array $rankFields = ['content'],
-    ): Collection {
+        int        $topN = 3,
+        array      $rankFields = ['content'],
+    ): Collection
+    {
         try {
             $request = new PineconeRerankVectorsRequest(
                 queryText: $userPrompt,
-                results: $results->map(fn (SearchMatch $match) => $match->toArray())->toArray(),
+                results: $results->map(fn(SearchMatch $match) => $match->toArray())->toArray(),
                 topN: $topN,
                 rankFields: $rankFields,
             );
 
             $results = $this->client->send($request);
-            if (! $results->successful()) {
+            if (!$results->successful()) {
                 return collect();
             }
 

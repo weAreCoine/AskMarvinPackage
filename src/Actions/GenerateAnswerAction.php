@@ -53,11 +53,12 @@ final class GenerateAnswerAction
      * All the dependencies are injected here, so it's better to use the make method to get an instance.
      */
     public function __construct(
-        protected PromptRepository $promptRepository,
-        protected TracingContextService $trace,
-        protected LlmService $llmService,
+        protected PromptRepository         $promptRepository,
+        protected TracingContextService    $trace,
+        protected LlmService               $llmService,
         protected VectorialDatabaseService $vectorialDatabaseService,
-    ) {
+    )
+    {
         $this->locale = Locale::from(config('app.locale', 'it'));
     }
 
@@ -72,7 +73,7 @@ final class GenerateAnswerAction
     }
 
     /**
-     * @param  array<string, array<string, mixed>>  $promptHydrationData  You can pass an array of hydration data for the prompts.
+     * @param array<string, array<string, mixed>> $promptHydrationData You can pass an array of hydration data for the prompts.
      *                                                                    These will take precedence over the default values.
      *                                                                    The shape of the array must be: ['prompt_name' => ['placeholder_name' => 'placeholder_value']
      *
@@ -82,9 +83,10 @@ final class GenerateAnswerAction
         string $answerGenerationPromptName = 'assistant_answer_generation',
         string $topicExtractorPromptName = 'topic_extractor',
         string $traceName = 'marvin_observation_',
-        array $promptHydrationData = [],
-        bool $lowDifficultyTasks = false
-    ): GenerateAnswerAction {
+        array  $promptHydrationData = [],
+        bool   $lowDifficultyTasks = false
+    ): GenerateAnswerAction
+    {
         if ($this->triedToInit) {
             throw new Exception('Cannot init the action twice');
         }
@@ -102,7 +104,7 @@ final class GenerateAnswerAction
             $this->trace->newTrace($this->traceName);
         }
 
-        if (! $this->setTopicExtractorPrompt() || ! $this->setAnswerGenerationPrompt()) {
+        if (!$this->setTopicExtractorPrompt() || !$this->setAnswerGenerationPrompt()) {
             $this->trace->pushEvent(name: 'error',
                 error: sprintf(
                     'Failed to retrieve %s or %s prompt',
@@ -131,7 +133,8 @@ final class GenerateAnswerAction
     protected function setPrompt(
         string $promptName,
         string $label = 'production',
-    ): false|PromptTemplate {
+    ): false|PromptTemplate
+    {
         $promptTraceLabel = str_replace('_', '-', $promptName);
 
         $this->trace->beginSpan(sprintf('retrieve-%s-prompt', $promptTraceLabel),
@@ -180,7 +183,7 @@ final class GenerateAnswerAction
      */
     public function run(string $message): false|string|callable
     {
-        if (! $this->canRun) {
+        if (!$this->canRun) {
             throw new Exception($this->triedToInit ? 'There was an error initializing the action. Please try again.' : 'Cannot run the action without initializing it first');
         }
 
@@ -200,7 +203,7 @@ final class GenerateAnswerAction
             return false;
         }
 
-        if (! empty($topics['locale'])) {
+        if (!empty($topics['locale'])) {
             $this->setLocale($topics['locale']);
         }
         $contents = $this->retrieveChunksFromVectorialDatabase($topics);
@@ -217,7 +220,7 @@ final class GenerateAnswerAction
             name: 'topic_extraction',
             prompt: $prompt,
             input: $this->message,
-            model: config('services.prism.chat.model'),
+            model: config('ask.services.prism.chat.model'),
             modelParameters: $prompt->config->toArray(),
             metadata: [
                 'hydration' => $prompt->hydrationData,
@@ -225,7 +228,7 @@ final class GenerateAnswerAction
         );
         $topics = $this->llmService->text($prompt, stream: false);
         $topics = json_validate($topics) ? json_decode($topics, associative: true) : false;
-        $this->trace->closeGeneration(! empty($topics) ? $topics : 'Error extracting topics.');
+        $this->trace->closeGeneration(!empty($topics) ? $topics : 'Error extracting topics.');
 
         return $topics;
     }
@@ -236,7 +239,7 @@ final class GenerateAnswerAction
         foreach ($prompt->hydratableAttributes as $attribute) {
             $hydrationData[$attribute] = $this->promptHydrationData[$prompt->name][$attribute]
                 ?? match ($attribute) {
-                    'town' => config('marvin.town'),
+                    'town' => config('ask.town'),
                     'today_date' => now()->format('Y-m-d'),
                     'user_prompt', 'email_message', 'email_content' => $this->message,
                     'vectorial_database_provider' => 'Pinecone',
@@ -364,11 +367,11 @@ final class GenerateAnswerAction
         $this->trace->beginGeneration('answer_generation',
             prompt: $prompt,
             input: $this->message,
-            model: config('services.prism.chat.model'),
+            model: config('ask.services.prism.chat.model'),
             modelParameters: $prompt->config->toArray(),
             metadata: [
                 'hydration' => $prompt->hydrationData,
-                ...($this->chat !== null ? ['preserve_context' => config('marvin.preserve_history_during_chat')] : []),
+                ...($this->chat !== null ? ['preserve_context' => config('ask.preserve_history_during_chat')] : []),
             ]
         );
     }

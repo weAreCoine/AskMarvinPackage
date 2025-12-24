@@ -22,13 +22,13 @@ final class GmailClientFactory extends AbstractEmailClientFactory
     {
         $client = new GoogleClient();
         try {
-            $client->setAuthConfig(config('services.google_api.sa_key_path'));
+            $client->setAuthConfig(config('ask.services.google_api.sa_key_path'));
             $client->setApplicationName(config('app.name', 'Marvin Gmail'));
             $client->setSubject($userEmail);
             $client->setScopes(
                 $scopes ?:
                     config(
-                        'services.google_api.scopes',
+                        'ask.services.google_api.scopes',
                         [
                             Gmail::GMAIL_COMPOSE, Gmail::GMAIL_SEND, Gmail::GMAIL_READONLY, Gmail::GMAIL_MODIFY
                         ]

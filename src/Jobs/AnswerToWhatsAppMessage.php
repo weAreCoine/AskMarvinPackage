@@ -30,7 +30,7 @@ class AnswerToWhatsAppMessage implements ShouldQueue
      */
     public function __construct(protected array $payload)
     {
-        $this->sendWaitingMessage = config('services.whatsapp.send_waiting_message', false);
+        $this->sendWaitingMessage = config('ask.services.whatsapp.send_waiting_message', false);
         $this->waitingMessage = __('Ho ricevuto il tuo messaggio... attendi qualche secondo.');
         $this->canRun = !empty($payload['messages']) && is_array($payload['messages']);
     }
@@ -47,11 +47,11 @@ class AnswerToWhatsAppMessage implements ShouldQueue
         Log::info('Received WAMID: ' . ($this->payload['messages'][0]['id'] ?? 'UNKWNOWN'), $this->payload);
         Log::info('WHATSAPP ENV SNAPSHOT', [
             'app_env' => config('app.env'),
-            'town' => config('marvin.town'),
-            'pinecone_env' => config('services.pinecone.environment'),
-            'pinecone_index' => config('services.pinecone.index'),
-            'pinecone_namespace' => config('services.pinecone.namespace'),
-            'model' => config('services.prism.chat.model'),
+            'town' => config('ask.town'),
+            'pinecone_env' => config('ask.services.pinecone.environment'),
+            'pinecone_index' => config('ask.services.pinecone.index'),
+            'pinecone_namespace' => config('ask.services.pinecone.namespace'),
+            'model' => config('ask.services.prism.chat.model'),
         ]);
 
         $whatsappMessageData = [
@@ -84,7 +84,7 @@ class AnswerToWhatsAppMessage implements ShouldQueue
                     $whatsappMessageData['phone_number_id']
                 );
 
-                if (config('services.whatsapp.send_waiting_message')) {
+                if (config('ask.services.whatsapp.send_waiting_message')) {
                     $whatsAppClient->sendText($whatsappMessageData['sender_whatsapp_id'],
                         'Ho ricevuto il tuo messaggio... attendi qualche secondo.');
                 }

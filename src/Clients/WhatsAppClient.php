@@ -20,13 +20,13 @@ readonly class WhatsAppClient
 
     public function __construct()
     {
-        $this->verifyToken = config('services.whatsapp.verification_token');
-        $this->graphVersion = config('services.whatsapp.graph_version');
-        $this->phoneNumberId = config('services.whatsapp.phone_number_id');
+        $this->verifyToken = config('ask.services.whatsapp.verification_token');
+        $this->graphVersion = config('ask.services.whatsapp.graph_version');
+        $this->phoneNumberId = config('ask.services.whatsapp.phone_number_id');
     }
 
     /**
-     * @param  bool  $putTypingIndicator  The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
+     * @param bool $putTypingIndicator The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
      */
     public function markAsRead(string $messageId, ?string $phoneNumberId = null, bool $putTypingIndicator = true): bool
     {

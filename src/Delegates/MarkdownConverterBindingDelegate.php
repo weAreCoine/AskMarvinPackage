@@ -19,7 +19,7 @@ class MarkdownConverterBindingDelegate
         $environment->addEventListener(DocumentParsedEvent::class,
             function (DocumentParsedEvent $event) {
                 $walker = $event->getDocument()->walker();
-                $base = config('marvin.town_site_base_url');
+                $base = config('ask.town_site_base_url');
 
                 while ($eventNode = $walker->next()) {
                     $node = $eventNode->getNode();
