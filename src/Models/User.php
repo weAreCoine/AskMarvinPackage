@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Marvin\Ask\Models;
@@ -15,9 +16,9 @@ use Marvin\Ask\Enums\Role;
 
 class User extends Authenticatable implements FilamentUser
 {
+    use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasApiTokens;
 
     public bool $isAdministrator {
         get => $this->role === Role::Admin;
@@ -30,6 +31,7 @@ class User extends Authenticatable implements FilamentUser
     public bool $isUser {
         get => $this->role === Role::User;
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,6 +42,7 @@ class User extends Authenticatable implements FilamentUser
         'created_at',
         'updated_at',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -57,10 +60,9 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        //TODO Change the logic if not every user can access every panel
+        // TODO Change the logic if not every user can access every panel
         return true;
     }
-
 
     /**
      * Get the attributes that should be cast.

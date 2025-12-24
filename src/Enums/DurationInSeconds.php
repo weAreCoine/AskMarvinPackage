@@ -21,14 +21,12 @@ enum DurationInSeconds: int
         int $minutes = 0,
         int $hours = 0,
         int $days = 0,
-            $weeks = 0,
-            $months = 0,
-            $years = 0
-    ): int
-    {
+        $weeks = 0,
+        $months = 0,
+        $years = 0
+    ): int {
         return $seconds + self::minutes($minutes) + self::hours($hours) + self::days($days) + self::weeks($weeks) + self::months($months) + self::years($years);
     }
-
 
     public static function minutes(int $minutesCount = 1): int
     {
@@ -89,5 +87,4 @@ enum DurationInSeconds: int
     {
         return DurationInSeconds::YEAR->value;
     }
-
 }
