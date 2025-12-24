@@ -3,6 +3,9 @@
 namespace Marvin\Ask;
 
 use Marvin\Ask\Commands\AskQuestion;
+use Marvin\Ask\Commands\DeleteOldCommandRuns;
+use Marvin\Ask\Commands\Documents\DeleteOrphans;
+use Marvin\Ask\Commands\GetEmbedVector;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -21,6 +24,11 @@ class AskServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->discoversMigrations()
             ->runsMigrations()
-            ->hasCommand(AskQuestion::class);
+            ->hasCommands([
+                DeleteOrphans::class,
+                AskQuestion::class,
+                DeleteOldCommandRuns::class,
+                GetEmbedVector::class
+            ]);
     }
 }

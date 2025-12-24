@@ -5,7 +5,6 @@ namespace Marvin\Ask\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Marvin\Ask\Actions\GenerateAnswerAction;
-use Marvin\Ask\Actions\ParallelGenerateAnswerAction;
 use Marvin\Ask\Handlers\ExceptionsHandler;
 
 class AskQuestion extends Command
