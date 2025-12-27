@@ -26,7 +26,7 @@ readonly class WhatsAppClient
     }
 
     /**
-     * @param bool $putTypingIndicator The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
+     * @param  bool  $putTypingIndicator  The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first.
      */
     public function markAsRead(string $messageId, ?string $phoneNumberId = null, bool $putTypingIndicator = true): bool
     {

@@ -25,7 +25,7 @@ class TracingContextService
     }
 
     /**
-     * @param LangfuseClient $client
+     * @param  LangfuseClient  $client
      */
     public function __construct(public AbstractTracingClient $client)
     {
@@ -45,13 +45,12 @@ class TracingContextService
     }
 
     public function pushEvent(
-        string            $name,
+        string $name,
         string|array|null $input = null,
         string|array|null $error = null,
-        ?array            $metadata = [],
-        ObservationLevel  $level = ObservationLevel::DEFAULT,
-    ): TracingContextService
-    {
+        ?array $metadata = [],
+        ObservationLevel $level = ObservationLevel::DEFAULT,
+    ): TracingContextService {
         $parent = $this->context->getLastOpened();
         $event = new Event(
             name: $name,
@@ -70,13 +69,12 @@ class TracingContextService
     }
 
     public function beginSpan(
-        string            $name,
+        string $name,
         string|array|null $input = null,
-        ?array            $metadata = [],
-        ObservationLevel  $level = ObservationLevel::DEFAULT,
-        ?PromptTemplate   $prompt = null,
-    ): TracingContextService
-    {
+        ?array $metadata = [],
+        ObservationLevel $level = ObservationLevel::DEFAULT,
+        ?PromptTemplate $prompt = null,
+    ): TracingContextService {
         $parent = $this->context->getLastOpenedSpan();
         if (is_array($input)) {
             $input = json_encode($input);
@@ -99,16 +97,15 @@ class TracingContextService
     }
 
     public function beginGeneration(
-        string          $name,
+        string $name,
         ?PromptTemplate $prompt = null,
-        string          $statusMessage = 'Generation started',
-        ?string         $input = null,
-        ?string         $model = null,
-        array           $modelParameters = [],
-        array           $usageDetails = [],
-        array           $metadata = [],
-    ): TracingContextService
-    {
+        string $statusMessage = 'Generation started',
+        ?string $input = null,
+        ?string $model = null,
+        array $modelParameters = [],
+        array $usageDetails = [],
+        array $metadata = [],
+    ): TracingContextService {
         $parent = $this->context->getLastOpenedSpan();
 
         $generation = new Generation(
@@ -140,7 +137,7 @@ class TracingContextService
 
             return null;
         }
-        if (!is_string($output)) {
+        if (! is_string($output)) {
             $output = json_encode($output, JSON_PRETTY_PRINT);
         }
 
@@ -175,7 +172,7 @@ class TracingContextService
 
     public function isNotEmpty(): bool
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     public function isEmpty(): bool
