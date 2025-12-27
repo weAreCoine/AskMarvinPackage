@@ -12,7 +12,7 @@ use Marvin\Ask\Models\Message;
  */
 class MessageFactory extends Factory
 {
-    static MessageType $type = MessageType::USER;
+    public static MessageType $type = MessageType::USER;
 
     /**
      * Define the model's default state.
@@ -28,6 +28,7 @@ class MessageFactory extends Factory
         ];
 
         self::$type = self::$type === MessageType::USER ? MessageType::ASSISTANT : MessageType::USER;
+
         return $data;
     }
 }

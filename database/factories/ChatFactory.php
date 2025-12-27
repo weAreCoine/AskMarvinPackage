@@ -30,6 +30,7 @@ class ChatFactory extends Factory
             'payload' => base64_encode(serialize([])),
             'last_activity' => now()->timestamp,
         ]);
+
         return [
             'user_id' => fake()->boolean(5) ? User::factory() : null,
             'deleted_at' => fake()->boolean(15) ? now() : null,

@@ -59,6 +59,7 @@ class AskServiceProvider extends PackageServiceProvider
         $this->registerBindings();
         $this->registerScopedServices();
         $this->registerSingletonServices();
+
         return $this;
     }
 
@@ -68,7 +69,7 @@ class AskServiceProvider extends PackageServiceProvider
     protected function registerBindings(): void
     {
         $this->app->bind(VectorialDatabaseClient::class, PineconeClient::class);
-        $this->app->bind(MarkdownConverter::class, fn() => MarkdownConverterBindingDelegate::getConcrete());
+        $this->app->bind(MarkdownConverter::class, fn () => MarkdownConverterBindingDelegate::getConcrete());
         $this->app->bind(AbstractEmailClientFactory::class, GmailClientFactory::class);
     }
 
@@ -92,10 +93,10 @@ class AskServiceProvider extends PackageServiceProvider
      */
     protected function registerSingletonServices(): void
     {
-        $this->app->singleton(TokenCounter::class, fn() => new TokenCounter(config('ask.services.prism.chat.model')));
+        $this->app->singleton(TokenCounter::class, fn () => new TokenCounter(config('ask.services.prism.chat.model')));
         $this->app->singleton(Prism::class, Prism::class);
         $this->app->singleton(Pinecone::class,
-            fn() => new Pinecone(config('ask.services.pinecone.api_key'),
+            fn () => new Pinecone(config('ask.services.pinecone.api_key'),
                 config('ask.services.pinecone.index_host')));
 
         $this->app->singleton(PromptRepository::class);
@@ -105,13 +106,11 @@ class AskServiceProvider extends PackageServiceProvider
         $this->app->singleton(WhatsAppClient::class);
         $this->app->singleton(LlmService::class);
         $this->app->singleton(AbstractTracingClient::class,
-            fn() => new LangfuseClient(
+            fn () => new LangfuseClient(
                 config('ask.services.langfuse.key'),
                 config('ask.services.langfuse.secret'),
                 config('ask.services.langfuse.host')
             )
         );
     }
-
-
 }
