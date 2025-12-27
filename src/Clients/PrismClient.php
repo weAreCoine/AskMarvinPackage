@@ -28,8 +28,7 @@ use Prism\Prism\ValueObjects\Media\Audio;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\SystemMessage;
 use Prism\Prism\ValueObjects\Messages\UserMessage;
-
-use function App\Utilities\compress;
+use function Marvin\Utilities\compress;
 
 class PrismClient extends LlmProviderClient
 {
@@ -60,7 +59,7 @@ class PrismClient extends LlmProviderClient
 
         $this->dateTimeTool = Tool::as('datetime')
             ->for('Get the current date and time in the format YYYY-MM-DD HH:MM:SS')
-            ->using(fn () => Carbon::now()->format('Y-m-d H:i:s'));
+            ->using(fn() => Carbon::now()->format('Y-m-d H:i:s'));
 
         $this->schemas = [
             'topic_extractor' => new ObjectSchema(
@@ -115,7 +114,7 @@ class PrismClient extends LlmProviderClient
         try {
             return collect(Prism::embeddings()->using($this->embedProvider, $this->embedModel)
                 ->fromArray($prompts)
-                ->asEmbeddings()->embeddings)->map(fn (Embedding $embedding) => $embedding->embedding)->toArray();
+                ->asEmbeddings()->embeddings)->map(fn(Embedding $embedding) => $embedding->embedding)->toArray();
         } catch (Exception $e) {
             ExceptionsHandler::handle($e, [
                 'prompts' => $prompts,
@@ -157,7 +156,7 @@ class PrismClient extends LlmProviderClient
         Locale $locale = Locale::ITALIAN,
         bool $isLowDifficultyTask = false
     ): string|Generator {
-        if ($prompt instanceof PromptTemplate && ! empty($this->schemas[$prompt->name]) && ! $forceNotStructuredOutput) {
+        if ($prompt instanceof PromptTemplate && !empty($this->schemas[$prompt->name]) && !$forceNotStructuredOutput) {
             return $this->structured($prompt, $chat, $retrievedContents);
         }
 
@@ -230,7 +229,7 @@ class PrismClient extends LlmProviderClient
         $conversation = [];
         $isStringPrompt = is_string($prompt);
         $systemPrompt = $isStringPrompt ? null : $prompt->getSystemPrompt();
-        if (! empty($systemPrompt)) {
+        if (!empty($systemPrompt)) {
             $conversation[] = new SystemMessage(compress($systemPrompt));
         }
         $conversation[] = new SystemMessage(compress(
@@ -334,7 +333,7 @@ class PrismClient extends LlmProviderClient
         }
 
         return $chat->messages->map(
-            fn (Message $message) => $message->type === MessageType::USER ?
+            fn(Message $message) => $message->type === MessageType::USER ?
                 new UserMessage(compress($message->content)) :
                 new AssistantMessage(compress($message->content))
         )->toArray();

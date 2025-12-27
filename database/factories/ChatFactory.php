@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories;
+declare(strict_types=1);
+
+namespace Marvin\Ask\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Marvin\Ask\Models\Chat;
 use Marvin\Ask\Models\User;
 
@@ -13,6 +13,8 @@ use Marvin\Ask\Models\User;
  */
 class ChatFactory extends Factory
 {
+    protected $model = Chat::class;
+
     /**
      * Define the model's default state.
      *
@@ -20,16 +22,6 @@ class ChatFactory extends Factory
      */
     public function definition(): array
     {
-        $sessionId = Str::random(40);
-
-        DB::table('sessions')->insert([
-            'id' => $sessionId,
-            'user_id' => null,
-            'ip_address' => fake()->ipv4,
-            'user_agent' => fake()->userAgent,
-            'payload' => base64_encode(serialize([])),
-            'last_activity' => now()->timestamp,
-        ]);
 
         return [
             'user_id' => fake()->boolean(5) ? User::factory() : null,

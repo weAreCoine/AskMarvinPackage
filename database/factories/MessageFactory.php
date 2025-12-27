@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Marvin\Ask\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Marvin\Ask\Enums\MessageType;
@@ -13,6 +13,7 @@ use Marvin\Ask\Models\Message;
 class MessageFactory extends Factory
 {
     public static MessageType $type = MessageType::USER;
+    protected $model = Message::class;
 
     /**
      * Define the model's default state.

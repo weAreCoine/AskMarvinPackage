@@ -44,8 +44,11 @@
     "autoload": {
         "psr-4": {
             "Marvin\\Ask\\": "src/",
-            "Database\\Factories\\": "database/factories/"
-        }
+            "Marvin\\Ask\\Database\\Factories\\": "database/factories/"
+        },
+        "files": [
+            "utilities/utilities.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
