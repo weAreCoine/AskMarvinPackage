@@ -86,6 +86,9 @@ class PrismClient extends LlmProviderClient
         ];
     }
 
+    /**
+     * @return array<int, float>
+     */
     public function embed(string $prompt): array
     {
         try {

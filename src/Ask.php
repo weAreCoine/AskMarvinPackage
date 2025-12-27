@@ -2,7 +2,7 @@
 
 namespace Marvin\Ask;
 
-use Faker\Generator;
+use Generator;
 use Marvin\Ask\Entities\Prompt\PromptTemplate;
 use Marvin\Ask\Enums\Locale;
 use Marvin\Ask\Models\Chat;

@@ -14,6 +14,7 @@ use Marvin\Ask\Clients\PineconeClient;
 use Marvin\Ask\Clients\PrismClient;
 use Marvin\Ask\Clients\WhatsAppClient;
 use Marvin\Ask\Commands\AskQuestion;
+use Marvin\Ask\Commands\ConsoleCommand;
 use Marvin\Ask\Commands\DeleteOldCommandRuns;
 use Marvin\Ask\Commands\Documents\DeleteOrphans;
 use Marvin\Ask\Commands\GetEmbedVector;
@@ -50,6 +51,7 @@ class AskServiceProvider extends PackageServiceProvider
                 AskQuestion::class,
                 DeleteOldCommandRuns::class,
                 GetEmbedVector::class,
+                ConsoleCommand::class
             ]);
     }
 

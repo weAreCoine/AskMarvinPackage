@@ -11,10 +11,6 @@ use Prism\Prism\ValueObjects\Messages\UserMessage;
 
 uses(RefreshDatabase::class);
 
-test('test', function () {
-    expect(true)->toBeTrue();
-})->only();
-
 test('client is injected from app service provider', function () {
     expect(app(LlmService::class)->llmClient)->toBeInstanceOf(LlmProviderClient::class);
 });
