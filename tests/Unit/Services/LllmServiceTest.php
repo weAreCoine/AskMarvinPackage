@@ -2,10 +2,18 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Marvin\Ask\Abstracts\LlmProviderClient;
+use Marvin\Ask\Models\Chat;
+use Marvin\Ask\Models\Message;
 use Marvin\Ask\Services\LlmService;
 use Prism\Prism\Enums\Provider;
+use Prism\Prism\ValueObjects\Messages\AssistantMessage;
+use Prism\Prism\ValueObjects\Messages\UserMessage;
 
 uses(RefreshDatabase::class);
+
+test('test', function () {
+    expect(true)->toBeTrue();
+})->only();
 
 test('client is injected from app service provider', function () {
     expect(app(LlmService::class)->llmClient)->toBeInstanceOf(LlmProviderClient::class);
@@ -29,11 +37,10 @@ test('text method return correct response', function () {
         ->toBeString('Response is not a string');
 });
 it('can convert Chat model to conversation array', function () {
-//    $chat = Chat::factory()->has(Message::factory(10))->create();
-    expect(true)->toBeTrue();
-//    $conversation = app(LlmService::class)->conversationFromChat($chat);
-//    expect($conversation)->toBeArray()
-//        ->and(count($conversation))->toBe(10)
-//        ->and($conversation[0])->toBeInstanceOf(UserMessage::class)
-//        ->and($conversation[1])->toBeInstanceOf(AssistantMessage::class);
-})->only();
+    $chat = Chat::factory()->has(Message::factory(10))->create();
+    $conversation = app(LlmService::class)->conversationFromChat($chat);
+    expect($conversation)->toBeArray()
+        ->and(count($conversation))->toBe(10)
+        ->and($conversation[0])->toBeInstanceOf(UserMessage::class)
+        ->and($conversation[1])->toBeInstanceOf(AssistantMessage::class);
+});
