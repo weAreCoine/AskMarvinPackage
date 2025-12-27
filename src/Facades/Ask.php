@@ -23,23 +23,22 @@ class Ask extends Facade
     /**
      * Processes the given prompt and returns the generated response or a streamable output.
      *
-     * @param PromptTemplate|string $prompt The prompt template or string to generate a response for.
-     * @param Chat|null $chat Optional chat context for the prompt.
-     * @param array<int,mixed> $retrievedContents Additional retrieved content to provide context for generation.
-     * @param bool $stream Whether to stream the generated response or return it as a single string.
-     * @param Locale $locale The locale to use for generation, defaulting to Italian.
-     * @param bool $isLowDifficultyTask Whether the task is categorized as low difficulty.
+     * @param  PromptTemplate|string  $prompt  The prompt template or string to generate a response for.
+     * @param  Chat|null  $chat  Optional chat context for the prompt.
+     * @param  array<int,mixed>  $retrievedContents  Additional retrieved content to provide context for generation.
+     * @param  bool  $stream  Whether to stream the generated response or return it as a single string.
+     * @param  Locale  $locale  The locale to use for generation, defaulting to Italian.
+     * @param  bool  $isLowDifficultyTask  Whether the task is categorized as low difficulty.
      * @return Generator|string A generator for streamed output if $stream is true, otherwise a single response string.
      */
     public function question(
         PromptTemplate|string $prompt,
-        ?Chat                 $chat = null,
-        array                 $retrievedContents = [],
-        bool                  $stream = true,
-        Locale                $locale = Locale::ITALIAN,
-        bool                  $isLowDifficultyTask = false
-    ): Generator|string
-    {
+        ?Chat $chat = null,
+        array $retrievedContents = [],
+        bool $stream = true,
+        Locale $locale = Locale::ITALIAN,
+        bool $isLowDifficultyTask = false
+    ): Generator|string {
         return $this->llm()->text(
             $prompt,
             $chat,
@@ -58,8 +57,8 @@ class Ask extends Facade
     /**
      * Embeds the given prompt(s) into a vector representation.
      *
-     * @param string|array<int,string> $prompt The prompt or an array of prompts to embed.
-     * @param string ...$prompts Additional prompts to embed.
+     * @param  string|array<int,string>  $prompt  The prompt or an array of prompts to embed.
+     * @param  string  ...$prompts  Additional prompts to embed.
      * @return array<int,float>|array<int,array<int,float>> The vector representation of the prompt(s).
      */
     public function embed(string|array $prompt, string ...$prompts): array
