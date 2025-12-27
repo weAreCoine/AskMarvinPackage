@@ -8,7 +8,6 @@ use Prism\Prism\Enums\Provider;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\UserMessage;
 
-
 test('client is injected from app service provider', function () {
     expect(app(LlmService::class)->llmClient)->toBeInstanceOf(LlmProviderClient::class);
 });
