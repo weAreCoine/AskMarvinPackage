@@ -60,7 +60,7 @@ class Ask extends Facade
      *
      * @param string|array<int,string> $prompt The prompt or an array of prompts to embed.
      * @param string ...$prompts Additional prompts to embed.
-     * @return array<int,float>|array<int,array<int,float>> The vector representation of the prompt(s).
+     * @return array<int,float>|array<int,array<int,float>> The vector representation of the prompxsdft(s).
      */
     public function embed(string|array $prompt, string ...$prompts): array
     {
